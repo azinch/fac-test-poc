@@ -1,0 +1,153 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>github.andreyz.test</groupId>
+   <artifactId>fac-test-poc</artifactId>
+   <version>0.0.1-SNAPSHOT</version>
+  
+   <properties>
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <slf4j.version>1.7.25</slf4j.version>
+      <junit.platform.version>1.6.2</junit.platform.version>
+      <junit.jupiter.version>5.6.2</junit.jupiter.version>
+      <mockito.version>3.3.3</mockito.version>
+      <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
+      <jacoco.version>0.8.5</jacoco.version>
+   </properties>
+   
+   <dependencies>
+      
+      <!-- Java logger -->
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-log4j12</artifactId>
+         <version>${slf4j.version}</version>
+      </dependency>
+   
+      <!-- NAPI for mvn local repository -->
+      <dependency>
+         <groupId>github.andreyz.test</groupId>
+         <artifactId>napi-test</artifactId>
+         <version>1.0</version>
+         <scope>system</scope>
+         <systemPath>${project.basedir}/src/main/resources/napi-test.jar</systemPath>
+      </dependency>
+      
+      <dependency>
+         <groupId>github.andreyz.test</groupId>
+         <artifactId>napi</artifactId>
+         <version>1.0</version>
+         <scope>system</scope>
+         <systemPath>${project.basedir}/src/main/resources/napi.jar</systemPath>
+      </dependency>
+   
+      <!-- JUnit5 -->
+      <dependency>
+         <groupId>org.junit.platform</groupId>
+         <artifactId>junit-platform-launcher</artifactId>
+         <version>${junit.platform.version}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.junit.jupiter</groupId>
+         <artifactId>junit-jupiter</artifactId>
+         <version>${junit.jupiter.version}</version>
+         <scope>test</scope>
+      </dependency>
+      
+      <!-- JUnit5 extension for Mocking libs -->
+      <dependency>
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-junit-jupiter</artifactId>
+         <version>${mockito.version}</version>
+         <scope>test</scope>
+      </dependency>
+      
+   </dependencies>
+   
+   <build>
+      <plugins>
+         
+         <!-- maven surefire to run test phase -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${surefire.plugin.version}</version>
+            <configuration>
+               <testFailureIgnore>true</testFailureIgnore>
+               <excludes>
+                  <exclude>**/*ITest.java</exclude>
+               </excludes>
+            </configuration>
+         </plugin>
+         
+         <!-- Jacoco plugin to report Code coverage for UT -->
+         <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco.version}</version>
+            <executions>
+               <execution>
+                  <id>prepare-agent</id>
+                  <goals>
+                     <goal>prepare-agent</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>report</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                     <goal>report</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>post-unit-test</id>
+                  <phase>test</phase>
+                  <goals>
+                     <goal>report</goal>
+                  </goals>
+                  <configuration>
+                     <!-- sets the path to the file which contains the execution data. -->
+                     <dataFile>target/jacoco.exec</dataFile>
+                     <!-- sets the output directory for the code coverage report . -->
+                     <outputDirectory>target/jacoco-ut</outputDirectory>
+                  </configuration>
+               </execution>
+            </executions>
+            <configuration>
+               <systemPropertyVariables>
+                  <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+               </systemPropertyVariables>
+            </configuration>
+         </plugin>
+         
+      </plugins>
+   </build>
+   
+   <profiles>
+      <profile>
+         <!-- mvn build profile only for Integration tests  -->
+         <id>integration</id>
+            <build>
+               <plugins>
+                  <plugin>
+                     <groupId>org.apache.maven.plugins</groupId>
+                     <artifactId>maven-surefire-plugin</artifactId>
+                     <configuration>
+                        <excludes>
+                           <exclude>**/*UTest.java</exclude>
+                        </excludes>
+                     </configuration>
+                  </plugin>
+               </plugins>
+            </build>
+      </profile>
+   </profiles>
+     
+</project>
