@@ -4,7 +4,7 @@ TEST DATA MANAGEMENT.
 
 0. System Self-testing. 
    Testing NAPI (FAC) should be based on NAPI itself, at least in terms of preparing COMPLEX data/entity (BAN, Subscriber, etc.). 
-   It also allows to significantly reduce maintanance of a new API for testing.   
+   It also allows to significantly reduce maintenance of a new API for testing.   
 
 1. PRE-BUILD phase of CI pipeline (prepare Initial data).
 
