@@ -2,6 +2,10 @@
 
 TEST DATA MANAGEMENT.
 
+0. System Self-testing. 
+   Testing NAPI (FAC) should be based on NAPI itself, at least in terms of preparing COMPLEX data/entity (BAN, Subscriber, etc.). 
+   It also allows to significantly reduce maintanance of a new API for testing.   
+
 1. PRE-BUILD phase of CI pipeline (prepare Initial data).
 
    Existing NAPI jobs should prepare data in RM, before UnitTests start (e.g. NAPI BOX Create , etc.).
@@ -20,7 +24,7 @@ TEST DATA MANAGEMENT.
 4. To simplify and speed up UnitTests development in terms of data preparation, UT should use API specifically designed 
    to create data in convinient manner (set of methods in the new NapiDataFactory class).               
 
-5. NapiDataFactory methods should mostly avoid using existing NAPI or use them only to create COMPLEX data/entity (BAN, Subscriber, etc.). 
+5. NapiDataFactory methods should use existing NAPI to create COMPLEX data/entity (BAN, Subscriber, etc.). 
 
 6. NapiDataFactory core class uses existing NapiFactory  (java/com support) .
 
@@ -62,4 +66,5 @@ When reviewing pay attention to :
 -	ExternalSystemApiClientUTest.java   (template for mocking External obj , java Mockito )
 -	SuspendRestoreCTNUTest.java   (dual activity u-test using NapiDataFactory, JUnit 5 : parallel support, test ordering, test conditions, etc .)
 -	ChangeCtnUTest.java
+-  junit-platform.properties   (common settings for parallel testing) 
 
